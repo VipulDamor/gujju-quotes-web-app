@@ -17,19 +17,20 @@ Route::get('/', function () {
     });
 
     // Categories
-    $categories = Category::all();
+    $categories = Category::limit(15)->get();
 
-    // Random Quotes for "Explore"
-    $exploreQuotes = Quote::with('category')->inRandomOrder()->limit(12)->get();
+    // Limited Random Quotes for "Explore" (The "Teaser")
+    $exploreQuotes = Quote::with('category')->inRandomOrder()->limit(8)->get();
 
     return view('welcome', compact('qotd', 'categories', 'exploreQuotes'));
 });
 
 Route::get('/category/{id}', function ($id) {
     $category = Category::findOrFail($id);
-    $quotes = Quote::where('category_id', $id)->with('category')->paginate(20);
+    // Limit to only 6 quotes per category on web to encourage app download
+    $quotes = Quote::where('category_id', $id)->with('category')->limit(6)->get();
     return view('quotes.category', compact('category', 'quotes'));
-})->name('quotes.by-category');
+})->where('id', '[0-9]+')->name('quotes.by-category');
 
 Route::get('/quote/{id}', function ($id) {
     $quote = Quote::with('category')->findOrFail($id);

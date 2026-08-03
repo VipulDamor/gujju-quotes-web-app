@@ -19,16 +19,12 @@
         </p>
     </div>
     <div class="flex justify-between items-center mt-4">
-        <span class="text-xs opacity-75 uppercase tracking-wider font-semibold">
-            {{ $quote->category->name ?? 'Quote' }}
+        <span class="text-[10px] opacity-75 uppercase tracking-widest font-black">
+            {{ $quote->category->name ?? 'Wisdom' }}
         </span>
-        <div class="flex gap-3 relative z-20">
-            <button onclick="event.stopPropagation(); copyQuote('{{ addslashes($quote->quote) }}')" class="hover:opacity-100 opacity-80 transition p-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" /></svg>
-            </button>
-            <button onclick="event.stopPropagation(); shareQuote('{{ addslashes($quote->quote) }}')" class="hover:opacity-100 opacity-80 transition p-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 100-2.684 3 3 0 000 2.684zm0 12.684a3 3 0 100-2.684 3 3 0 000 2.684z" /></svg>
-            </button>
+        <div class="flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition">
+             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+             <span class="text-[10px] font-black uppercase tracking-tighter">Open in App</span>
         </div>
     </div>
 </div>

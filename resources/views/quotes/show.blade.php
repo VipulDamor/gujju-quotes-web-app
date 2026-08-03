@@ -75,16 +75,15 @@
                 <div class="absolute bottom-0 left-0 w-48 h-48 bg-black/20 rounded-full -ml-24 -mb-24 blur-2xl"></div>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <button onclick="copyQuote('{{ addslashes($quote->quote) }}')" class="w-full sm:w-auto flex items-center justify-center gap-3 bg-white border-2 border-gray-100 px-8 py-4 rounded-2xl font-black text-gray-700 shadow-sm hover:shadow-md transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" /></svg>
-                    Copy Quote
-                </button>
-                <a href="https://play.google.com/store/apps/details?id=com.one993techsol.gujju_bestgujaratistatusapp" class="w-full sm:w-auto flex items-center justify-center gap-3 bg-[#4F0C2A] px-10 py-4 rounded-2xl font-black text-white shadow-xl hover:scale-105 transition">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                    Get App for Daily Updates
-                </a>
+            <!-- CTA Section -->
+            <div class="text-center">
+                <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px] mb-6">Features available on mobile</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="https://play.google.com/store/apps/details?id=com.one993techsol.gujju_bestgujaratistatusapp" class="w-full sm:w-auto flex items-center justify-center gap-4 bg-[#4F0C2A] px-12 py-5 rounded-[2rem] font-black text-white shadow-2xl hover:scale-105 transition-all">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        Download to Copy & Share
+                    </a>
+                </div>
             </div>
         </div>
     </main>
@@ -92,13 +91,5 @@
     <footer class="p-12 text-center text-gray-400 text-xs font-bold uppercase tracking-widest">
         © {{ date('Y') }} Gujju Quotes App Safety Council.
     </footer>
-
-    <script>
-        function copyQuote(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Copied to clipboard!');
-            });
-        }
-    </script>
 </body>
 </html>

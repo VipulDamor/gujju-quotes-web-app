@@ -138,11 +138,12 @@
                         <span class="w-1.5 md:w-2.5 h-8 md:h-10 bg-[#F797B6] rounded-full"></span>
                         Explore Quotes
                     </h2>
-                    <button id="shuffle-btn" onclick="shuffleQuotes()" class="flex items-center gap-2 text-[#4F0C2A] font-black text-xs uppercase tracking-widest hover:opacity-70 transition">
+                    <button id="shuffle-btn" onclick="shuffleQuotes()" class="flex items-center gap-2 text-[#4F0C2A] font-black text-[10px] md:text-xs uppercase tracking-widest hover:opacity-70 transition border border-[#4F0C2A]/20 px-3 py-1.5 rounded-lg">
                         <svg id="shuffle-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
                         Shuffle
                     </button>
                 </div>
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mb-6 px-1">Web Preview Selection</p>
                 <div id="quotes-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 transition-opacity duration-300">
                     @foreach($exploreQuotes as $quote)
                         <x-quote-card :quote="$quote" />
@@ -160,12 +161,6 @@
                     <a href="/child-safety.html" class="hover:text-primary transition">Child Safety</a>
                 </div>
 
-                <!-- Security Proof Badge -->
-                <div class="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl">
-                    <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm-1 14.5l-3.5-3.5 1.41-1.41L11 13.67l4.59-4.59L17 10.5 11 16.5z"/></svg>
-                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Security Verified & SSL Encrypted</span>
-                </div>
-
                 <div class="text-gray-400 text-[10px] md:text-xs font-bold">
                     <p>© {{ date('Y') }} Gujju Quotes App. Crafted by One993Techsol.</p>
                 </div>
@@ -174,6 +169,9 @@
     </div>
 
     <script>
+        let shuffleCount = 0;
+        const MAX_SHUFFLES = 2;
+
         function copyQuote(text) {
             navigator.clipboard.writeText(text).then(() => {
                 showToast('Quote copied to clipboard!');
@@ -192,6 +190,11 @@
         }
 
         async function shuffleQuotes() {
+            if (shuffleCount >= MAX_SHUFFLES) {
+                showLimitModal();
+                return;
+            }
+
             const grid = document.getElementById('quotes-grid');
             const icon = document.getElementById('shuffle-icon');
             const btn = document.getElementById('shuffle-btn');
@@ -204,6 +207,12 @@
                 const response = await fetch('/api/quotes/random-shuffle');
                 const data = await response.json();
                 grid.innerHTML = data.html;
+                shuffleCount++;
+
+                if (shuffleCount >= MAX_SHUFFLES) {
+                    btn.innerHTML = '✨ Get Unlimited on App';
+                    btn.classList.add('bg-[#4F0C2A]', 'text-white', 'px-4', 'py-2', 'rounded-lg');
+                }
             } catch (error) {
                 console.error('Shuffle failed:', error);
             } finally {
@@ -211,6 +220,10 @@
                 icon.classList.remove('animate-spin');
                 btn.disabled = false;
             }
+        }
+
+        function showLimitModal() {
+            window.open('https://play.google.com/store/apps/details?id=com.one993techsol.gujju_bestgujaratistatusapp', '_blank');
         }
 
         function showToast(message) {
