@@ -14,13 +14,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Robust Public Path Detection for Hostinger & Local
-        if (file_exists(base_path('public_html/build/manifest.json'))) {
-            $this->app->usePublicPath(base_path('public_html'));
-        } elseif (file_exists(base_path('build/manifest.json'))) {
+        // Simple logic: If build folder exists in root, use root as public path (for Hostinger)
+        // Otherwise, use the standard /public folder (for Local)
+        if (file_exists(base_path('build/manifest.json'))) {
             $this->app->usePublicPath(base_path());
-        } elseif (is_dir(base_path('public_html'))) {
-            $this->app->usePublicPath(base_path('public_html'));
+        } else {
+            $this->app->usePublicPath(base_path('public'));
         }
     }
 
