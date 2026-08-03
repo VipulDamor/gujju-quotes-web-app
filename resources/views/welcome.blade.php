@@ -7,39 +7,63 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800,900&display=swap" rel="stylesheet" />
 
-    <!-- Scripts & Styles -->
-    @if(app()->environment('local'))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-        @php
-            $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
-            $cssFile = $manifest['resources/css/app.css']['file'];
-            $jsFile = $manifest['resources/js/app.js']['file'];
-        @endphp
-        <link rel="stylesheet" href="{{ asset('build/' . $cssFile) }}">
-        <script src="{{ asset('build/' . $jsFile) }}" defer></script>
-    @endif
+    <!-- Professional CDN Setup -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F0004',
+                        'on-primary': '#FFFFFF',
+                        'primary-container': '#4F0C2A',
+                        'on-primary-container': '#F797B6',
+                        secondary: '#7B535F',
+                        'on-secondary': '#FFFFFF',
+                        'secondary-container': '#FFD1DD',
+                        'on-secondary-container': '#5E3A45',
+                        background: '#FFF8F8',
+                        'on-background': '#211A1B',
+                        surface: '#FFF8F8',
+                        'on-surface': '#211A1B',
+                        'surface-variant': '#F5DDE2',
+                        'on-surface-variant': '#534347',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body { @apply bg-background text-on-background antialiased font-sans; }
+        }
+        @layer utilities {
+            .shadow-material { box-shadow: 0px 14px 34px 0px rgba(0, 0, 0, 0.08); }
+            .no-scrollbar::-webkit-scrollbar { display: none; }
+            .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        }
+    </style>
 </head>
-<body class="bg-background text-on-background antialiased font-sans">
+<body>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Header -->
         <header class="flex items-center justify-between mb-12">
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 rounded-full overflow-hidden shadow-material border-2 border-primary-container">
-                    <img src="/images/app_logo.png" alt="Logo" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Gujju+Quotes&background=4F0C2A&color=fff'">
+                    <img src="/images/app_logo.png" alt="Logo" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=GQ&background=4F0C2A&color=fff'">
                 </div>
                 <div>
-                    <h1 class="text-2xl font-bold text-primary">Gujju Quotes</h1>
-                    <p class="text-xs text-secondary font-medium tracking-tighter uppercase">Best Gujarati Status App</p>
+                    <h1 class="text-2xl font-black text-gray-900 tracking-tight">Gujju Quotes</h1>
+                    <p class="text-[10px] text-secondary font-black tracking-widest uppercase opacity-70">Best Gujarati Status App</p>
                 </div>
             </div>
             <nav class="hidden md:flex gap-8 items-center">
-                <a href="/" class="text-primary font-semibold border-b-2 border-primary pb-1">Home</a>
-                <a href="#categories" class="text-on-surface-variant hover:text-primary transition font-medium">Categories</a>
+                <a href="/" class="text-primary font-bold border-b-2 border-primary pb-1">Home</a>
+                <a href="#categories" class="text-gray-500 hover:text-primary transition font-bold text-sm">Categories</a>
                 <a href="https://play.google.com/store/apps/details?id=com.one993techsol.gujju_bestgujaratistatusapp" target="_blank"
-                   class="bg-primary-container text-on-primary-container px-5 py-2 rounded-xl text-sm font-bold shadow-sm hover:shadow-material transition duration-300">
+                   class="bg-primary-container text-on-primary-container px-6 py-2.5 rounded-xl text-xs font-black uppercase shadow-lg hover:scale-105 transition duration-300">
                     Download App
                 </a>
             </nav>
@@ -47,31 +71,32 @@
 
         <main>
             <!-- App Promotion Hero Section -->
-            <section class="mb-16 bg-gradient-to-br from-primary-container to-[#6A163C] rounded-[2rem] p-8 md:p-12 text-white shadow-material overflow-hidden relative">
+            <section class="mb-20 bg-[#4F0C2A] rounded-[3rem] p-10 md:p-16 text-white shadow-2xl relative overflow-hidden">
                 <div class="relative z-10 max-w-2xl">
-                    <h2 class="text-3xl md:text-4xl font-extrabold mb-4 leading-tight">
-                        Experience Gujju Quotes on the go!
+                    <span class="bg-white/10 px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest mb-6 inline-block">Official Mobile App</span>
+                    <h2 class="text-4xl md:text-6xl font-black mb-6 leading-[1.1] tracking-tight">
+                        Inspiration <br><span class="text-[#F797B6]">In Your Pocket.</span>
                     </h2>
-                    <p class="text-lg opacity-90 mb-8 leading-relaxed">
-                        Get daily motivation, beautiful statuses, and unique Gujarati quotes directly on your phone. Download now for a seamless experience.
+                    <p class="text-xl opacity-80 mb-10 leading-relaxed font-medium">
+                        Download the official Gujju Quotes app for a premium experience with daily updates and offline access.
                     </p>
                     <div class="flex flex-wrap gap-4">
                         <a href="https://play.google.com/store/apps/details?id=com.one993techsol.gujju_bestgujaratistatusapp" target="_blank" class="transition hover:scale-105">
-                            <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" class="h-16 -ml-3">
+                            <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" class="h-20 -ml-4">
                         </a>
                     </div>
                 </div>
-                <!-- Abstract Design Elements -->
-                <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
-                <div class="absolute bottom-0 left-0 w-48 h-48 bg-primary/20 rounded-full -ml-10 -mb-10 blur-2xl"></div>
+                <!-- Design Decor -->
+                <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-black/20 rounded-full -ml-32 -mb-32 blur-2xl"></div>
             </section>
 
             <!-- Quote of the Day Section -->
             @if($qotd)
-            <section class="mb-16">
-                <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-2xl font-bold flex items-center gap-3">
-                        <span class="w-1.5 h-8 bg-primary-container rounded-full"></span>
+            <section class="mb-20">
+                <div class="flex items-center justify-between mb-10">
+                    <h2 class="text-3xl font-black text-gray-900 tracking-tight flex items-center gap-4">
+                        <span class="w-2.5 h-10 bg-primary-container rounded-full"></span>
                         Quote Of The Day
                     </h2>
                 </div>
@@ -80,14 +105,14 @@
             @endif
 
             <!-- Categories Section -->
-            <section id="categories" class="mb-16">
-                <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-2xl font-bold flex items-center gap-3">
-                        <span class="w-1.5 h-8 bg-secondary-container rounded-full"></span>
-                        Browse Categories
+            <section id="categories" class="mb-20">
+                <div class="flex items-center justify-between mb-10">
+                    <h2 class="text-3xl font-black text-gray-900 tracking-tight flex items-center gap-4">
+                        <span class="w-2.5 h-10 bg-secondary-container rounded-full"></span>
+                        Categories
                     </h2>
                 </div>
-                <div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+                <div class="flex gap-4 overflow-x-auto pb-6 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
                     @foreach($categories as $category)
                         <x-category-chip :category="$category" />
                     @endforeach
@@ -95,11 +120,11 @@
             </section>
 
             <!-- Explore Section -->
-            <section class="mb-16">
-                <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-2xl font-bold flex items-center gap-3">
-                        <span class="w-1.5 h-8 bg-on-primary-container rounded-full"></span>
-                        Discover More
+            <section class="mb-20">
+                <div class="flex items-center justify-between mb-10">
+                    <h2 class="text-3xl font-black text-gray-900 tracking-tight flex items-center gap-4">
+                        <span class="w-2.5 h-10 bg-[#F797B6] rounded-full"></span>
+                        Explore Quotes
                     </h2>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -110,15 +135,15 @@
             </section>
         </main>
 
-        <footer class="mt-24 pb-12 text-center border-t border-surface-variant pt-12">
-            <div class="flex flex-col items-center gap-6">
-                <div class="flex gap-8 text-sm font-medium text-on-surface-variant">
+        <footer class="mt-32 pb-20 text-center border-t border-gray-100 pt-16">
+            <div class="flex flex-col items-center gap-8">
+                <div class="flex gap-10 text-sm font-black uppercase tracking-widest text-gray-400">
                     <a href="/" class="hover:text-primary transition">Home</a>
                     <a href="#categories" class="hover:text-primary transition">Categories</a>
                     <a href="/privacy.html" class="hover:text-primary transition">Privacy Policy</a>
                 </div>
-                <div class="text-on-surface-variant/60 text-xs">
-                    <p>© {{ date('Y') }} Gujju Quotes App. Developed by one993Techsol.</p>
+                <div class="text-gray-400 text-xs font-bold">
+                    <p>© {{ date('Y') }} Gujju Quotes App. Crafted by One993Techsol.</p>
                 </div>
             </div>
         </footer>
@@ -127,11 +152,9 @@
     <script>
         function copyQuote(text) {
             navigator.clipboard.writeText(text).then(() => {
-                // You could add a toast notification here for more professional feel
                 alert('Quote copied to clipboard!');
             });
         }
-
         function shareQuote(text) {
             if (navigator.share) {
                 navigator.share({
@@ -144,19 +167,5 @@
             }
         }
     </script>
-    <style>
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        /* Smooth scrolling for anchor links */
-        html {
-            scroll-behavior: smooth;
-        }
-    </style>
 </body>
 </html>
