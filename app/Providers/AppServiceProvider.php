@@ -1,38 +1,34 @@
 <?php
 
-
 namespace App\Providers;
-use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
     public $namespace = 'App\\Http\\Controllers';
+
     /**
      * Register any application services.
      */
     public function register(): void
     {
-        // 1. Detect if we are on Hostinger (checking for specific directory structure)
-        $isHostinger = str_contains(base_path(), 'public_html');
+        // 1. Array of possible relative paths to the manifest from the project root
+        $manifestRelativePaths = [
+            'public/build/manifest.json',
+            'public_html/build/manifest.json',
+            'build/manifest.json',
+        ];
 
-        // 2. Set the public path automatically
-        if ($isHostinger) {
-            $this->app->usePublicPath(base_path());
-        } else {
-            $this->app->usePublicPath(base_path('public'));
-        }
-
-        // 3. Force Vite to look in the correct manifest location
-        $this->app->singleton(\Illuminate\Foundation\Vite::class, function ($app) use ($isHostinger) {
-            $vite = new \Illuminate\Foundation\Vite;
-            if ($isHostinger) {
-                // On Hostinger, we serve from root, so we tell Vite manifest is in /build
-                return $vite->useBuildDirectory('build');
+        foreach ($manifestRelativePaths as $relativePath) {
+            if (file_exists(base_path($relativePath))) {
+                // Set the public path to the directory containing the 'build' folder
+                $publicDir = dirname(str_replace('/manifest.json', '', base_path($relativePath)));
+                $this->app->usePublicPath($publicDir);
+                return;
             }
-            return $vite;
-        });
+        }
     }
 
     /**
@@ -41,13 +37,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Route::prefix('api')
-        ->middleware('api')
-        ->namespace($this->namespace)
-        ->group(base_path('routes/api.php')); // Specify path to api.php
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/api.php'));
 
-    // Register the Web Routes
-    Route::middleware('web')
-        ->namespace($this->namespace)
-        ->group(base_path('routes/web.php')); // Specify path to web.php
+        Route::middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web.php'));
     }
 }
