@@ -13,11 +13,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Fix for Hostinger shared hosting public path
-        if (str_contains(base_path(), 'public_html')) {
-            $this->app->bind('path.public', function () {
-                return base_path();
-            });
+        // Auto-detect public path for Hostinger vs Local
+        $possiblePaths = [
+            base_path('public_html'),
+            base_path('public'),
+            base_path(),
+        ];
+
+        foreach ($possiblePaths as $path) {
+            if (file_exists($path . '/build/manifest.json')) {
+                $this->app->usePublicPath($path);
+                break;
+            }
         }
     }
 
@@ -26,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Force HTTPS in production for professional look and security
+        // Force HTTPS in production
         if (config('app.env') === 'production') {
             URL::forceScheme('https');
         }

@@ -59,3 +59,36 @@ Route::get('/api/quotes/random-shuffle', function () {
 });
 
 Route::get('quotes/search/', [QuoteController::class, 'searchQuoteByName']);
+
+// --- ADMIN PANEL ROUTES ---
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\QuoteManagementController;
+use App\Http\Controllers\Admin\ReportManagementController;
+use App\Http\Controllers\Admin\ProfileController;
+
+Route::prefix('admin')->group(function () {
+    // Guest Routes
+    Route::middleware('guest')->group(function () {
+        Route::get('/login', [AuthController::class, 'showLogin'])->name('admin.login');
+        Route::post('/login', [AuthController::class, 'login'])->name('admin.login.post');
+    });
+
+    // Protected Routes
+    Route::middleware('auth')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+        Route::post('/logout', [AuthController::class, 'logout'])->name('admin.logout');
+
+        // Quote Management
+        Route::resource('quotes', QuoteManagementController::class, ['as' => 'admin']);
+
+        // Report Management
+        Route::get('/reports', [ReportManagementController::class, 'index'])->name('admin.reports.index');
+        Route::delete('/reports/{id}', [ReportManagementController::class, 'destroy'])->name('admin.reports.destroy');
+        Route::post('/reports/{id}/delete-quote', [ReportManagementController::class, 'deleteQuote'])->name('admin.reports.delete-quote');
+
+        // Profile / Security
+        Route::get('/security', [ProfileController::class, 'showChangePassword'])->name('admin.password.edit');
+        Route::post('/security', [ProfileController::class, 'updatePassword'])->name('admin.password.update');
+    });
+});
