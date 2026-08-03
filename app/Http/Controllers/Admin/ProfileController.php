@@ -31,11 +31,11 @@ class ProfileController extends Controller
             'password' => Hash::make($request->new_password)
         ]);
 
-        // Securely update the session to match the new password hash
-        $request->session()->put([
-            'password_hash_' . Auth::getDefaultDriver() => $user->getAuthPassword(),
-        ]);
+        // For maximum security: Log out the user and redirect to login
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-        return back()->with('success', 'Your password has been updated successfully!');
+        return redirect()->route('admin.login')->with('success', 'Password updated! Please sign in with your new credentials.');
     }
 }
