@@ -14,7 +14,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Fix for Vite manifest and public paths on Hostinger shared hosting
+        if ($this->app->environment('production')) {
+            $this->app->bind('path.public', function () {
+                return base_path('public_html');
+            });
+        }
     }
 
     /**
