@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-background text-on-background antialiased;
+    }
+}
+
+@layer components {
+    .staggered-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-auto-rows: 10px;
+        gap: 16px;
+    }
+
+    .staggered-item {
+        grid-row-end: span 20; /* Default span, will be adjusted by content */
+    }
+}

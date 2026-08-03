@@ -1,34 +1,34 @@
 <?php
+
 use App\Http\Controllers\Api\QuoteController;
-/* use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\CategoryController;
-
-use App\Http\Controllers\Api\QuoteReportController;
-
-// Category Routes
-Route::resource('api/categories', CategoryController::class);
-
-// Quote Routes
-Route::resource('api/quotes', QuoteController::class);
-Route::get('api/quotes/category/{category_id}', [QuoteController::class, 'getQuotesByCategory']);
-Route::get('api/quote-of-the-day', [QuoteController::class, 'quoteOfTheDay']);
-//Route::get('api/quotes/search', [QuoteController::class, 'searchQuoteByName']);
-Route::get('quotes/search/', [QuoteController::class, 'searchQuoteByName']);
-
-// QuoteReport Routes
-Route::resource('api/quotereports', QuoteReportController::class);
-
-Route::fallback(function () {
-    return response()->json(['message' => 'Route not found in Laravel'], 404);
-});
- */
+use App\Models\Category;
+use App\Models\Quote;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
-Route::get('quotes/search/', [QuoteController::class, 'searchQuoteByName']);
-
 Route::get('/', function () {
-    return "API is running. You can access the API endpoints through /api routes.";
+    // Quote of the Day
+    $dayOfYear = now()->dayOfYear;
+    $qotd = Cache::remember('qotd_' . now()->format('Y_m_d'), now()->addDay(), function () use ($dayOfYear) {
+        return Quote::with('category')
+            ->whereNotIn('category_id', [5, 6, 10, 12, 13, 15, 16, 17, 18])
+            ->orderByRaw("RAND($dayOfYear)")
+            ->first();
+    });
+
+    // Categories
+    $categories = Category::all();
+
+    // Random Quotes for "Explore"
+    $exploreQuotes = Quote::with('category')->inRandomOrder()->limit(12)->get();
+
+    return view('welcome', compact('qotd', 'categories', 'exploreQuotes'));
 });
-/* Route::get('/', function () {
-    return view('welcome');
-}); */
+
+Route::get('/category/{id}', function ($id) {
+    $category = Category::findOrFail($id);
+    $quotes = Quote::where('category_id', $id)->with('category')->paginate(20);
+    return view('quotes.category', compact('category', 'quotes'));
+})->name('quotes.by-category');
+
+Route::get('quotes/search/', [QuoteController::class, 'searchQuoteByName']);
