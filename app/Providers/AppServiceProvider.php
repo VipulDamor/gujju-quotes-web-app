@@ -14,8 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Tell Laravel that public_html is the root for public assets
-        $this->app->usePublicPath(base_path());
+        // Dynamically detect public path for Local vs Hostinger
+        $publicPath = is_dir(base_path('public_html')) ? base_path('public_html') : base_path('public');
+        $this->app->usePublicPath($publicPath);
     }
 
     /**
