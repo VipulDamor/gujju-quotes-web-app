@@ -13,7 +13,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Relying on standard Laravel paths and .htaccess for deployment.
+        // Fix for Hostinger shared hosting public path
+        if (str_contains(base_path(), 'public_html')) {
+            $this->app->bind('path.public', function () {
+                return base_path();
+            });
+        }
     }
 
     /**

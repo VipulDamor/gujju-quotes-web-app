@@ -9,8 +9,18 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Scripts & Styles -->
+    @if(app()->environment('local'))
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        @php
+            $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+            $cssFile = $manifest['resources/css/app.css']['file'];
+            $jsFile = $manifest['resources/js/app.js']['file'];
+        @endphp
+        <link rel="stylesheet" href="{{ asset('build/' . $cssFile) }}">
+        <script src="{{ asset('build/' . $jsFile) }}" defer></script>
+    @endif
 </head>
 <body class="bg-background text-on-background antialiased font-sans">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
