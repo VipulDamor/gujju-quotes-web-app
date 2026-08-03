@@ -14,8 +14,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Dynamically detect public path for Local vs Hostinger
-        $publicPath = is_dir(base_path('public_html')) ? base_path('public_html') : base_path('public');
+        // Smart Path Detection: Use public_html for Hostinger, public for Local
+        $publicPath = (basename(base_path()) === 'public_html') ? base_path() : base_path('public');
         $this->app->usePublicPath($publicPath);
     }
 
