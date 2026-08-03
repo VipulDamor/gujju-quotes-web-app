@@ -14,10 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Force the public path to public_html for Hostinger compatibility
-        $this->app->bind('path.public', function () {
-            return base_path('public_html');
-        });
+        $this->app->usePublicPath(base_path('public_html'));
     }
 
     /**
