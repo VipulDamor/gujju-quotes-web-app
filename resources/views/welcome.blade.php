@@ -3,7 +3,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- SEO & Social Media Optimization -->
     <title>Gujju Quotes - Best Gujarati Status App</title>
+    <meta name="description" content="Discover a world of inspiring, humorous, and thought-provoking Gujarati quotes. Download our app for daily updates!">
+    <meta property="og:title" content="Gujju Quotes - Best Gujarati Status App">
+    <meta property="og:description" content="Daily inspirational and motivational Gujarati quotes in your pocket.">
+    <meta property="og:image" content="{{ asset('images/app_logo.png') }}">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/app_logo.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -71,18 +83,18 @@
 
         <main>
             <!-- App Promotion Hero Section -->
-            <section class="mb-20 bg-[#4F0C2A] rounded-[3rem] p-10 md:p-16 text-white shadow-2xl relative overflow-hidden">
-                <div class="relative z-10 max-w-2xl">
-                    <span class="bg-white/10 px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest mb-6 inline-block">Official Mobile App</span>
-                    <h2 class="text-4xl md:text-6xl font-black mb-6 leading-[1.1] tracking-tight">
+            <section class="mb-12 md:mb-20 bg-[#4F0C2A] rounded-[2rem] md:rounded-[3rem] p-8 md:p-16 text-white shadow-2xl relative overflow-hidden">
+                <div class="relative z-10 max-w-2xl text-center md:text-left">
+                    <span class="bg-white/10 px-3 py-1 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest mb-4 md:mb-6 inline-block">Official Mobile App</span>
+                    <h2 class="text-3xl md:text-6xl font-black mb-4 md:mb-6 leading-[1.1] tracking-tight">
                         Inspiration <br><span class="text-[#F797B6]">In Your Pocket.</span>
                     </h2>
-                    <p class="text-xl opacity-80 mb-10 leading-relaxed font-medium">
+                    <p class="text-base md:text-xl opacity-80 mb-8 md:mb-10 leading-relaxed font-medium">
                         Download the official Gujju Quotes app for a premium experience with daily updates and offline access.
                     </p>
-                    <div class="flex flex-wrap gap-4">
-                        <a href="https://play.google.com/store/apps/details?id=com.one993techsol.gujju_bestgujaratistatusapp" target="_blank" class="transition hover:scale-105">
-                            <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" class="h-20 -ml-4">
+                    <div class="flex flex-wrap justify-center md:justify-start gap-2 md:gap-4">
+                        <a href="https://play.google.com/store/apps/details?id=com.one993techsol.gujju_bestgujaratistatusapp" target="_blank" class="transition active:scale-95 hover:scale-105">
+                            <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" class="h-16 md:h-20">
                         </a>
                     </div>
                 </div>
@@ -93,10 +105,10 @@
 
             <!-- Quote of the Day Section -->
             @if($qotd)
-            <section class="mb-20">
-                <div class="flex items-center justify-between mb-10">
-                    <h2 class="text-3xl font-black text-gray-900 tracking-tight flex items-center gap-4">
-                        <span class="w-2.5 h-10 bg-primary-container rounded-full"></span>
+            <section class="mb-16 md:mb-20">
+                <div class="flex items-center justify-between mb-8 md:mb-10">
+                    <h2 class="text-2xl md:text-3xl font-black text-gray-900 tracking-tight flex items-center gap-3 md:gap-4">
+                        <span class="w-1.5 md:w-2.5 h-8 md:h-10 bg-primary-container rounded-full"></span>
                         Quote Of The Day
                     </h2>
                 </div>
@@ -105,10 +117,10 @@
             @endif
 
             <!-- Categories Section -->
-            <section id="categories" class="mb-20">
-                <div class="flex items-center justify-between mb-10">
-                    <h2 class="text-3xl font-black text-gray-900 tracking-tight flex items-center gap-4">
-                        <span class="w-2.5 h-10 bg-secondary-container rounded-full"></span>
+            <section id="categories" class="mb-16 md:mb-20">
+                <div class="flex items-center justify-between mb-8 md:mb-10">
+                    <h2 class="text-2xl md:text-3xl font-black text-gray-900 tracking-tight flex items-center gap-3 md:gap-4">
+                        <span class="w-1.5 md:w-2.5 h-8 md:h-10 bg-secondary-container rounded-full"></span>
                         Categories
                     </h2>
                 </div>
@@ -120,14 +132,18 @@
             </section>
 
             <!-- Explore Section -->
-            <section class="mb-20">
-                <div class="flex items-center justify-between mb-10">
-                    <h2 class="text-3xl font-black text-gray-900 tracking-tight flex items-center gap-4">
-                        <span class="w-2.5 h-10 bg-[#F797B6] rounded-full"></span>
+            <section class="mb-16 md:mb-20">
+                <div class="flex items-center justify-between mb-8 md:mb-10">
+                    <h2 class="text-2xl md:text-3xl font-black text-gray-900 tracking-tight flex items-center gap-3 md:gap-4">
+                        <span class="w-1.5 md:w-2.5 h-8 md:h-10 bg-[#F797B6] rounded-full"></span>
                         Explore Quotes
                     </h2>
+                    <button id="shuffle-btn" onclick="shuffleQuotes()" class="flex items-center gap-2 text-[#4F0C2A] font-black text-xs uppercase tracking-widest hover:opacity-70 transition">
+                        <svg id="shuffle-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        Shuffle
+                    </button>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <div id="quotes-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 transition-opacity duration-300">
                     @foreach($exploreQuotes as $quote)
                         <x-quote-card :quote="$quote" />
                     @endforeach
@@ -135,14 +151,22 @@
             </section>
         </main>
 
-        <footer class="mt-32 pb-20 text-center border-t border-gray-100 pt-16">
+        <footer class="mt-24 md:mt-32 pb-12 md:pb-20 text-center border-t border-gray-100 pt-16">
             <div class="flex flex-col items-center gap-8">
-                <div class="flex gap-10 text-sm font-black uppercase tracking-widest text-gray-400">
+                <div class="flex flex-wrap justify-center gap-6 md:gap-10 text-xs md:text-sm font-black uppercase tracking-widest text-gray-400">
                     <a href="/" class="hover:text-primary transition">Home</a>
                     <a href="#categories" class="hover:text-primary transition">Categories</a>
                     <a href="/privacy.html" class="hover:text-primary transition">Privacy Policy</a>
+                    <a href="/child-safety.html" class="hover:text-primary transition">Child Safety</a>
                 </div>
-                <div class="text-gray-400 text-xs font-bold">
+
+                <!-- Security Proof Badge -->
+                <div class="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl">
+                    <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm-1 14.5l-3.5-3.5 1.41-1.41L11 13.67l4.59-4.59L17 10.5 11 16.5z"/></svg>
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Security Verified & SSL Encrypted</span>
+                </div>
+
+                <div class="text-gray-400 text-[10px] md:text-xs font-bold">
                     <p>© {{ date('Y') }} Gujju Quotes App. Crafted by One993Techsol.</p>
                 </div>
             </div>
@@ -152,7 +176,7 @@
     <script>
         function copyQuote(text) {
             navigator.clipboard.writeText(text).then(() => {
-                alert('Quote copied to clipboard!');
+                showToast('Quote copied to clipboard!');
             });
         }
         function shareQuote(text) {
@@ -165,6 +189,44 @@
             } else {
                 copyQuote(text);
             }
+        }
+
+        async function shuffleQuotes() {
+            const grid = document.getElementById('quotes-grid');
+            const icon = document.getElementById('shuffle-icon');
+            const btn = document.getElementById('shuffle-btn');
+
+            btn.disabled = true;
+            icon.classList.add('animate-spin');
+            grid.style.opacity = '0.5';
+
+            try {
+                const response = await fetch('/api/quotes/random-shuffle');
+                const data = await response.json();
+                grid.innerHTML = data.html;
+            } catch (error) {
+                console.error('Shuffle failed:', error);
+            } finally {
+                grid.style.opacity = '1';
+                icon.classList.remove('animate-spin');
+                btn.disabled = false;
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-2xl text-sm font-bold shadow-2xl z-[100] transition-all transform translate-y-20 opacity-0';
+            toast.innerText = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-20', 'opacity-0');
+            }, 100);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
         }
     </script>
 </body>

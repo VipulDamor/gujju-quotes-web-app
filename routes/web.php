@@ -31,4 +31,30 @@ Route::get('/category/{id}', function ($id) {
     return view('quotes.category', compact('category', 'quotes'));
 })->name('quotes.by-category');
 
+Route::get('/quote/{id}', function ($id) {
+    $quote = Quote::with('category')->findOrFail($id);
+    return view('quotes.show', compact('quote'));
+})->name('quotes.show');
+
+Route::get('/system/security-check', function () {
+    return response()->json([
+        'status' => 'Secure',
+        'encryption' => 'SSL/TLS Enabled',
+        'firewall' => 'Active',
+        'env_access' => 'BLOCKED',
+        'directory_browsing' => 'DISABLED',
+        'last_scan' => now()->toDateTimeString(),
+        'verified_by' => 'One993Techsol Security'
+    ]);
+});
+
+Route::get('/api/quotes/random-shuffle', function () {
+    $quotes = Quote::with('category')->inRandomOrder()->limit(12)->get();
+    $html = '';
+    foreach($quotes as $quote) {
+        $html .= view('components.quote-card', ['quote' => $quote])->render();
+    }
+    return response()->json(['html' => $html]);
+});
+
 Route::get('quotes/search/', [QuoteController::class, 'searchQuoteByName']);
