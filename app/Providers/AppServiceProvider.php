@@ -14,21 +14,25 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // 1. Log the current paths to help debug on Hostinger
-        \Illuminate\Support\Facades\Log::debug('Deployment Debug:', [
-            'base_path' => base_path(),
-            'public_path_default' => public_path(),
-            'manifest_exists_in_root' => file_exists(base_path('build/manifest.json')),
-            'manifest_exists_in_public' => file_exists(base_path('public/build/manifest.json')),
-            'current_directory' => getcwd(),
-        ]);
+        // 1. Detect if we are on Hostinger (checking for specific directory structure)
+        $isHostinger = str_contains(base_path(), 'public_html');
 
-        // 2. Set the public path
-        if (file_exists(base_path('build/manifest.json'))) {
+        // 2. Set the public path automatically
+        if ($isHostinger) {
             $this->app->usePublicPath(base_path());
         } else {
             $this->app->usePublicPath(base_path('public'));
         }
+
+        // 3. Force Vite to look in the correct manifest location
+        $this->app->singleton(\Illuminate\Foundation\Vite::class, function ($app) use ($isHostinger) {
+            $vite = new \Illuminate\Foundation\Vite;
+            if ($isHostinger) {
+                // On Hostinger, we serve from root, so we tell Vite manifest is in /build
+                return $vite->useBuildDirectory('build');
+            }
+            return $vite;
+        });
     }
 
     /**
