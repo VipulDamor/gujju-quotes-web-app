@@ -14,8 +14,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Simple logic: If build folder exists in root, use root as public path (for Hostinger)
-        // Otherwise, use the standard /public folder (for Local)
+        // 1. Log the current paths to help debug on Hostinger
+        \Illuminate\Support\Facades\Log::debug('Deployment Debug:', [
+            'base_path' => base_path(),
+            'public_path_default' => public_path(),
+            'manifest_exists_in_root' => file_exists(base_path('build/manifest.json')),
+            'manifest_exists_in_public' => file_exists(base_path('public/build/manifest.json')),
+            'current_directory' => getcwd(),
+        ]);
+
+        // 2. Set the public path
         if (file_exists(base_path('build/manifest.json'))) {
             $this->app->usePublicPath(base_path());
         } else {
