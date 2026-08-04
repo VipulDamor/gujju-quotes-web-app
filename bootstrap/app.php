@@ -15,6 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
             guests: '/admin/login',
             users: '/admin/dashboard'
         );
+
+        $middleware->alias([
+            'api.key' => \App\Http\Middleware\CheckApiKey::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

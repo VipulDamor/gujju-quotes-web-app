@@ -64,6 +64,7 @@ Route::get('quotes/search/', [QuoteController::class, 'searchQuoteByName']);
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\QuoteManagementController;
+use App\Http\Controllers\Admin\CategoryManagementController;
 use App\Http\Controllers\Admin\ReportManagementController;
 use App\Http\Controllers\Admin\ProfileController;
 
@@ -81,6 +82,9 @@ Route::prefix('admin')->group(function () {
 
         // Quote Management
         Route::resource('quotes', QuoteManagementController::class, ['as' => 'admin']);
+
+        // Category Management
+        Route::resource('categories', CategoryManagementController::class, ['as' => 'admin']);
 
         // Report Management
         Route::get('/reports', [ReportManagementController::class, 'index'])->name('admin.reports.index');

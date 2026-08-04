@@ -99,6 +99,8 @@ return [
 
     'key' => env('APP_KEY'),
 
+    'api_key' => env('APP_V2_SECRET_KEY', 'GQ-Secret-Key-2026'),
+
     'previous_keys' => [
         ...array_filter(
             explode(',', env('APP_PREVIOUS_KEYS', ''))
