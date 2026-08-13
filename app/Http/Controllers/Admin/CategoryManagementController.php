@@ -31,12 +31,19 @@ class CategoryManagementController extends Controller
             'name' => 'required|string|max:255|unique:categories,name',
         ]);
 
-        // Sanitize input to prevent XSS
-        $name = strip_tags($request->name);
-
-        Category::create(['name' => $name]);
-
-        return redirect()->route('admin.categories.index')->with('success', 'Category created successfully!');
+        try {
+            // Sanitize input to prevent XSS
+            $name = strip_tags($request->name);
+            Category::create(['name' => $name]);
+            return redirect()->route('admin.categories.index')->with('success', 'Category created successfully!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withInput()->with([
+                'error' => 'Failed to create category. A database error occurred.',
+                'error_code' => $e->getCode()
+            ]);
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'An unexpected error occurred: ' . $e->getMessage());
+        }
     }
 
     public function edit(Category $category)
@@ -50,22 +57,36 @@ class CategoryManagementController extends Controller
             'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
         ]);
 
-        // Sanitize input to prevent XSS
-        $name = strip_tags($request->name);
-
-        $category->update(['name' => $name]);
-
-        return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully!');
+        try {
+            // Sanitize input to prevent XSS
+            $name = strip_tags($request->name);
+            $category->update(['name' => $name]);
+            return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withInput()->with([
+                'error' => 'Failed to update category. Database constraint violation.',
+                'error_code' => $e->getCode()
+            ]);
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Error: ' . $e->getMessage());
+        }
     }
 
     public function destroy(Category $category)
     {
-        // Check if category has quotes
-        if ($category->quotes()->count() > 0) {
-            return redirect()->route('admin.categories.index')->with('error', 'Cannot delete category that contains quotes. Please move or delete the quotes first.');
-        }
+        try {
+            // Check if category has quotes
+            if ($category->quotes()->count() > 0) {
+                return redirect()->route('admin.categories.index')->with('error', 'Cannot delete category that contains quotes. Please move or delete the quotes first.');
+            }
 
-        $category->delete();
-        return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully!');
+            $category->delete();
+            return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.categories.index')->with([
+                'error' => 'Could not delete category.',
+                'error_code' => 'ERR_DEL_CAT'
+            ]);
+        }
     }
 }

@@ -132,8 +132,9 @@
         <!-- Scrollable Content -->
         <div class="flex-1 overflow-y-auto p-4 md:p-10 bg-[#FDF7F9]">
             <div class="max-w-7xl mx-auto lg:mx-0">
+                {{-- Global Success Message --}}
                 @if(session('success'))
-                    <div class="max-w-4xl mb-6 md:mb-10 p-4 md:p-5 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-3xl shadow-sm flex items-center gap-4 animate-fade-in">
+                    <div class="auto-hide-alert max-w-4xl mb-6 md:mb-10 p-4 md:p-5 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-3xl shadow-sm flex items-center gap-4 animate-fade-in">
                         <div class="w-8 h-8 md:w-10 md:h-10 bg-emerald-500 text-white rounded-2xl flex items-center justify-center shadow-lg shrink-0">
                             <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
                         </div>
@@ -141,6 +142,39 @@
                             <p class="font-black text-[10px] uppercase tracking-widest text-emerald-900 leading-none mb-1">Success</p>
                             <p class="text-emerald-700 font-bold text-xs md:text-sm">{{ session('success') }}</p>
                         </div>
+                    </div>
+                @endif
+
+                {{-- Global Error Message --}}
+                @if(session('error'))
+                    <div class="auto-hide-alert max-w-4xl mb-6 md:mb-10 p-4 md:p-5 bg-red-50 border-l-4 border-red-500 rounded-r-3xl shadow-sm flex items-center gap-4 animate-fade-in">
+                        <div class="w-8 h-8 md:w-10 md:h-10 bg-red-500 text-white rounded-2xl flex items-center justify-center shadow-lg shrink-0">
+                            <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        </div>
+                        <div>
+                            <p class="font-black text-[10px] uppercase tracking-widest text-red-900 leading-none mb-1">System Error</p>
+                            <p class="text-red-700 font-bold text-xs md:text-sm">{{ session('error') }}</p>
+                            @if(session('error_code'))
+                                <span class="inline-block mt-2 px-2 py-0.5 bg-red-100 text-[8px] font-black text-red-600 rounded">CODE: {{ session('error_code') }}</span>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Validation Errors --}}
+                @if($errors->any())
+                    <div class="auto-hide-alert max-w-4xl mb-6 md:mb-10 p-4 md:p-5 bg-amber-50 border-l-4 border-amber-500 rounded-r-3xl shadow-sm flex flex-col gap-3 animate-fade-in">
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 md:w-10 md:h-10 bg-amber-500 text-white rounded-2xl flex items-center justify-center shadow-lg shrink-0">
+                                <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <p class="font-black text-[10px] uppercase tracking-widest text-amber-900">Check Form Requirements</p>
+                        </div>
+                        <ul class="ml-12 md:ml-14 list-disc space-y-1">
+                            @foreach($errors->all() as $error)
+                                <li class="text-amber-700 font-bold text-xs md:text-sm">{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
 
@@ -164,6 +198,19 @@
                 document.body.classList.remove('overflow-hidden');
             }
         }
+
+        // Auto-hide alerts after 5 seconds
+        document.addEventListener('DOMContentLoaded', () => {
+            const alerts = document.querySelectorAll('.auto-hide-alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateY(-10px)';
+                    setTimeout(() => alert.remove(), 500);
+                }, 5000);
+            });
+        });
     </script>
 
     <style>

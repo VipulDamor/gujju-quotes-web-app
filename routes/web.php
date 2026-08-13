@@ -81,6 +81,10 @@ Route::prefix('admin')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
         // Quote Management
+        Route::get('/quotes/bulk', [QuoteManagementController::class, 'bulkCreate'])->name('admin.quotes.bulk.create');
+        Route::post('/quotes/bulk/preview', [QuoteManagementController::class, 'bulkPreview'])->name('admin.quotes.bulk.preview');
+        Route::post('/quotes/bulk/remove', [QuoteManagementController::class, 'bulkRemove'])->name('admin.quotes.bulk.remove');
+        Route::post('/quotes/bulk/store', [QuoteManagementController::class, 'bulkStore'])->name('admin.quotes.bulk.store');
         Route::resource('quotes', QuoteManagementController::class, ['as' => 'admin']);
 
         // Category Management

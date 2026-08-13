@@ -27,15 +27,19 @@ class ProfileController extends Controller
             return back()->with('error', 'The current password you entered is incorrect.');
         }
 
-        $user->update([
-            'password' => Hash::make($request->new_password)
-        ]);
+        try {
+            $user->update([
+                'password' => Hash::make($request->new_password)
+            ]);
 
-        // For maximum security: Log out the user and redirect to login
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+            // For maximum security: Log out the user and redirect to login
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
 
-        return redirect()->route('admin.login')->with('success', 'Password updated! Please sign in with your new credentials.');
+            return redirect()->route('admin.login')->with('success', 'Password updated! Please sign in with your new credentials.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to update password. Please try again.');
+        }
     }
 }

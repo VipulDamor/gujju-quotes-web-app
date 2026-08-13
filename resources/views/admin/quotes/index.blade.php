@@ -10,10 +10,15 @@
         <svg class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
     </form>
 
-    <a href="{{ route('admin.quotes.create') }}"
-       class="w-full md:w-auto bg-[#4F0C2A] text-white px-8 py-3 md:py-4 rounded-xl md:rounded-2xl font-black text-xs md:text-sm uppercase tracking-widest shadow-xl shadow-[#4F0C2A]/20 hover:scale-[1.02] transition-all text-center">
-        + Add New Quote
-    </a>
+    <div class="flex items-center gap-4">
+        <a href="{{ route('admin.quotes.bulk.create') }}" class="bg-white border border-gray-100 text-[#4F0C2A] px-8 py-3 md:py-4 rounded-xl md:rounded-2xl font-black text-xs md:text-sm uppercase tracking-widest shadow-sm hover:bg-gray-50 transition-all text-center">
+            Bulk Upload
+        </a>
+        <a href="{{ route('admin.quotes.create') }}"
+           class="bg-[#4F0C2A] text-white px-8 py-3 md:py-4 rounded-xl md:rounded-2xl font-black text-xs md:text-sm uppercase tracking-widest shadow-xl shadow-[#4F0C2A]/20 hover:scale-[1.02] transition-all text-center">
+            + Add Quote
+        </a>
+    </div>
 </div>
 
 <div class="bg-white rounded-[1.5rem] md:rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
