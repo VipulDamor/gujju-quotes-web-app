@@ -68,9 +68,17 @@ class QuoteManagementController extends Controller
             }
             fclose($handle);
         } else {
-            // Handle Text Area
-            $separator = $request->input('separator', '\n');
-            $lines = ($separator === '\n') ? explode("\n", $request->quotes_text) : explode($separator, $request->quotes_text);
+            // Handle Text Area with Auto-Detection
+            $text = $request->quotes_text;
+            $separator = "\n"; // Default
+
+            if (str_contains($text, '|||')) {
+                $separator = '|||';
+            } elseif (str_contains($text, '###')) {
+                $separator = '###';
+            }
+
+            $lines = explode($separator, $text);
 
             foreach ($lines as $line) {
                 $lineNum++;
@@ -98,14 +106,55 @@ class QuoteManagementController extends Controller
             return back()->with('error', 'No valid quotes found in your input.');
         }
 
-        // Store in session for preview (storing only text for DB)
+        $quoteTexts = array_column($quotes, 'text');
+
+        // 1. Find duplicates WITHIN the uploaded list itself
+        $counts = array_count_values($quoteTexts);
+        $internalDuplicates = [];
+        $uniqueUploads = [];
+
+        foreach ($quotes as $q) {
+            if ($counts[$q['text']] > 1) {
+                // If it's a duplicate, only put the first occurrence in unique, others in duplicates
+                if (!in_array($q['text'], array_column($uniqueUploads, 'text'))) {
+                    $uniqueUploads[] = $q;
+                } else {
+                    $q['reason'] = 'Duplicate in upload';
+                    $internalDuplicates[] = $q;
+                }
+            } else {
+                $uniqueUploads[] = $q;
+            }
+        }
+
+        // 2. Optimized Database Duplicate Check
+        $allTextsToCheck = array_column($uniqueUploads, 'text');
+        // Fetch existing quotes from DB in one efficient query
+        $existingQuotes = Quote::whereIn('quote', $allTextsToCheck)
+            ->pluck('quote')
+            ->toArray();
+
+        $finalValidQuotes = [];
+        $dbDuplicates = [];
+
+        foreach ($uniqueUploads as $q) {
+            if (in_array($q['text'], $existingQuotes)) {
+                $q['reason'] = 'Already in Database';
+                $dbDuplicates[] = $q;
+            } else {
+                $finalValidQuotes[] = $q;
+            }
+        }
+
+        // Store only valid quotes in session for final processing
         session([
-            'bulk_quotes' => array_column($quotes, 'text'),
+            'bulk_quotes' => array_column($finalValidQuotes, 'text'),
             'bulk_category_id' => $request->category_id
         ]);
 
         return view('admin.quotes.bulk-preview', [
-            'quotes' => $quotes,
+            'quotes' => $finalValidQuotes,
+            'duplicates' => array_merge($internalDuplicates, $dbDuplicates),
             'category' => Category::find($request->category_id)
         ]);
     }

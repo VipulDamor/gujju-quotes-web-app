@@ -49,13 +49,9 @@
                         <textarea name="quotes_text" rows="8"
                                   class="w-full bg-gray-50 border border-gray-200 focus:border-[#4F0C2A] focus:ring-2 focus:ring-[#4F0C2A]/10 rounded-2xl px-6 py-5 text-gray-900 font-medium transition-all outline-none leading-relaxed"
                                   placeholder="Enter quotes here..."></textarea>
-                        <div class="flex items-center gap-4">
-                            <label class="text-[10px] font-bold text-gray-400 uppercase whitespace-nowrap">Separator:</label>
-                            <select name="separator" class="bg-white border border-gray-100 rounded-lg px-3 py-1 text-xs font-bold text-gray-600 outline-none">
-                                <option value="\n">New Line</option>
-                                <option value="###">### (Triple Hash)</option>
-                                <option value="|||">||| (Triple Pipe)</option>
-                            </select>
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"></span>
+                            <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Auto-detecting: New Line, ###, or |||</p>
                         </div>
                     </div>
 
