@@ -120,7 +120,7 @@
             <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
                 <div class="p-8 bg-white rounded-3xl border border-gray-100">
                     <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Email Us Directly</p>
-                    <a href="mailto:1993developers@gmail.com" class="text-xl font-black text-primary-container hover:underline">1993developers@gmail.com</a>
+                    <a href="mailto:support@gujjuapp.com" class="text-xl font-black text-primary-container hover:underline">support@gujjuapp.com</a>
                 </div>
                 <div class="p-8 bg-white rounded-3xl border border-gray-100">
                     <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Social Media</p>
