@@ -60,11 +60,13 @@ class ReportManagementController extends Controller
 
         if ($quote) {
             $quote->delete();
-            // All reports for this quote should ideally be cleaned up too
-            QuoteReport::where('quote_id', $report->quote_id)->delete();
-            return redirect()->route('admin.reports.index')->with('success', 'Offending quote and all its reports deleted.');
+            // Delete only this specific report row as requested by the user
+            $report->delete();
+            return redirect()->route('admin.reports.index')->with('success', 'Offending quote deleted.');
         }
 
-        return redirect()->route('admin.reports.index')->with('error', 'Quote already deleted.');
+        // If the quote was already deleted by another report action, still delete this specific report row
+        $report->delete();
+        return redirect()->route('admin.reports.index')->with('success', 'Report cleared.');
     }
 }
