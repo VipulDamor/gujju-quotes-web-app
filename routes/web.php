@@ -67,6 +67,7 @@ use App\Http\Controllers\Admin\QuoteManagementController;
 use App\Http\Controllers\Admin\CategoryManagementController;
 use App\Http\Controllers\Admin\ReportManagementController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\ContactManagementController;
 
 Route::prefix('admin')->group(function () {
     // Guest Routes
@@ -89,6 +90,12 @@ Route::prefix('admin')->group(function () {
 
         // Category Management
         Route::resource('categories', CategoryManagementController::class, ['as' => 'admin']);
+
+        // Contact Management
+        Route::get('/contacts', [ContactManagementController::class, 'index'])->name('admin.contacts.index');
+        Route::get('/contacts/{id}', [ContactManagementController::class, 'show'])->name('admin.contacts.show');
+        Route::put('/contacts/{id}', [ContactManagementController::class, 'update'])->name('admin.contacts.update');
+        Route::delete('/contacts/{id}', [ContactManagementController::class, 'destroy'])->name('admin.contacts.destroy');
 
         // Report Management
         Route::get('/reports', [ReportManagementController::class, 'index'])->name('admin.reports.index');

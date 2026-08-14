@@ -41,3 +41,10 @@ Route::prefix('v2')->middleware('api.key')->group(function () {
     Route::post('reports', [V2Report::class, 'store']);
 
 });
+
+// --- NEW CONTACT API ---
+use App\Http\Controllers\Api\V1\ContactController;
+
+Route::prefix('v1')->middleware(['api.key', 'throttle:contact'])->group(function () {
+    Route::post('contact', [ContactController::class, 'store']);
+});
