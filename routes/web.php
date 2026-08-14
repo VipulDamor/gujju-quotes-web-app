@@ -60,6 +60,11 @@ Route::get('/api/quotes/random-shuffle', function () {
 
 Route::get('quotes/search/', [QuoteController::class, 'searchQuoteByName']);
 
+// --- WEB CONTACT ROUTES ---
+use App\Http\Controllers\Web\ContactController as WebContact;
+Route::get('/contact', [WebContact::class, 'show'])->name('contact.show');
+Route::post('/contact', [WebContact::class, 'submit'])->name('contact.submit');
+
 // --- ADMIN PANEL ROUTES ---
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;

@@ -158,6 +158,7 @@
                     <a href="#categories" class="hover:text-primary transition">Categories</a>
                     <a href="/privacy.html" class="hover:text-primary transition">Privacy Policy</a>
                     <a href="/child-safety.html" class="hover:text-primary transition">Child Safety</a>
+                    <a href="{{ route('contact.show') }}" class="hover:text-primary transition">Contact Us</a>
                 </div>
 
                 <div class="text-gray-300 text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] leading-relaxed">
