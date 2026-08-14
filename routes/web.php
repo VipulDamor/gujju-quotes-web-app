@@ -76,7 +76,7 @@ use App\Http\Controllers\Admin\ContactManagementController;
 
 Route::prefix('admin')->group(function () {
     // Guest Routes
-    Route::middleware('guest')->group(function () {
+    Route::middleware(['guest', 'throttle:login'])->group(function () {
         Route::get('/login', [AuthController::class, 'showLogin'])->name('admin.login');
         Route::post('/login', [AuthController::class, 'login'])->name('admin.login.post');
     });

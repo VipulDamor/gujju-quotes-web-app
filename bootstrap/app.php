@@ -20,6 +20,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'api.key' => \App\Http\Middleware\CheckApiKey::class,
         ]);
+
+        $middleware->web(append: [
+            \Illuminate\Session\Middleware\AuthenticateSession::class,
+            \App\Http\Middleware\VerifySessionIntegrity::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

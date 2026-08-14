@@ -22,6 +22,11 @@
         </div>
 
         <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-10 border border-gray-100">
+            @if(session('error'))
+                <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-xl text-red-700 text-xs font-bold italic">
+                    {{ session('error') }}
+                </div>
+            @endif
             <form action="{{ route('admin.login.post') }}" method="POST">
                 @csrf
                 <div class="space-y-6">

@@ -279,6 +279,25 @@
 
                 el.innerText = date.toLocaleString(undefined, options);
             });
+
+            // Security: Auto-logout after inactivity
+            let idleTime = 0;
+            const maxIdleMinutes = 120; // 2 hours
+
+            // Increment the idle time counter every minute
+            const idleInterval = setInterval(() => {
+                idleTime++;
+                if (idleTime >= maxIdleMinutes) {
+                    window.location.href = "{{ route('admin.login') }}";
+                }
+            }, 60000); // 1 minute
+
+            // Reset idle timer on user activity
+            const resetTimer = () => { idleTime = 0; };
+            document.onmousemove = resetTimer;
+            document.onkeypress = resetTimer;
+            document.onscroll = resetTimer;
+            document.onclick = resetTimer;
         });
     </script>
 
