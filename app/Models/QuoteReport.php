@@ -30,6 +30,11 @@ class QuoteReport extends Model
         'timestamp' => 'datetime',
     ];
 
+    public function quote()
+    {
+        return $this->belongsTo(Quote::class, 'quote_id');
+    }
+
     public static function getReportOptions()
     {
         return [

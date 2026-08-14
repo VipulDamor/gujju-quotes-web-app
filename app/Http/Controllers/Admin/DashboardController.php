@@ -15,7 +15,7 @@ class DashboardController extends Controller
         $stats = [
             'total_quotes' => Quote::count(),
             'total_categories' => Category::count(),
-            'total_reports' => QuoteReport::count(),
+            'total_reports' => QuoteReport::has('quote')->count(),
             'recent_quotes' => Quote::with('category')->orderBy('id', 'desc')->limit(5)->get(),
         ];
 
