@@ -70,7 +70,13 @@
 
             <a href="{{ route('admin.contacts.index') }}" class="{{ $baseLink }} {{ request()->routeIs('admin.contacts.*') ? $active : $inactive }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                <span class="text-sm">Contact Requests</span>
+                <span class="text-sm flex-1">Contact Requests</span>
+                @php
+                    $newContacts = \App\Models\ContactRequest::active()->where('status', 'new')->count();
+                @endphp
+                @if($newContacts > 0)
+                    <span class="px-2 py-0.5 bg-accent text-primary text-[8px] font-black rounded-full">{{ $newContacts }}</span>
+                @endif
             </a>
 
             <a href="{{ route('admin.reports.index') }}" class="{{ $baseLink }} {{ request()->routeIs('admin.reports.*') ? $active : $inactive }}">
@@ -214,6 +220,61 @@
                     alert.style.transform = 'translateY(-10px)';
                     setTimeout(() => alert.remove(), 500);
                 }, 5000);
+            });
+
+            // Convert UTC times to Local Time or Time Ago
+            const timeElements = document.querySelectorAll('[data-utc]');
+
+            function getTimeAgo(date) {
+                const seconds = Math.floor((new Date() - date) / 1000);
+                const intervals = {
+                    year: 31536000,
+                    month: 2592000,
+                    week: 604800,
+                    day: 86400,
+                    hour: 3600,
+                    minute: 60,
+                    second: 1
+                };
+
+                for (let key in intervals) {
+                    const counter = Math.floor(seconds / intervals[key]);
+                    if (counter > 0) {
+                        return counter === 1 ? `1 ${key} ago` : `${counter} ${key}s ago`;
+                    }
+                }
+                return "just now";
+            }
+
+            timeElements.forEach(el => {
+                const utcDate = el.getAttribute('data-utc');
+                if (!utcDate) return;
+
+                const date = new Date(utcDate);
+                if (isNaN(date.getTime())) return;
+
+                const format = el.getAttribute('data-format') || 'datetime';
+
+                if (format === 'timeago') {
+                    el.innerText = getTimeAgo(date);
+                    // Add full date as tooltip
+                    el.title = date.toLocaleString();
+                    return;
+                }
+
+                let options = {};
+                if (format === 'date') {
+                    options = { year: 'numeric', month: 'short', day: '2-digit' };
+                } else if (format === 'time') {
+                    options = { hour: '2-digit', minute: '2-digit', hour12: true };
+                } else {
+                    options = {
+                        year: 'numeric', month: 'short', day: '2-digit',
+                        hour: '2-digit', minute: '2-digit', hour12: true
+                    };
+                }
+
+                el.innerText = date.toLocaleString(undefined, options);
             });
         });
     </script>

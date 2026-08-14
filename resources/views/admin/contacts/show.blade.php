@@ -28,7 +28,9 @@
                     </div>
                     <div class="text-right">
                         <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Created At</p>
-                        <p class="text-sm font-black text-gray-900">{{ $contact->created_at->format('M d, Y - h:i A') }}</p>
+                        <p class="text-sm font-black text-gray-900" data-utc="{{ $contact->created_at->toIso8601String() }}">
+                            {{ $contact->created_at->format('M d, Y - h:i A') }}
+                        </p>
                     </div>
                 </div>
 
@@ -160,7 +162,9 @@
                         <div class="relative pl-4 border-l-2 border-gray-100">
                             <div class="absolute -left-[5px] top-0 w-2 h-2 bg-gray-200 rounded-full"></div>
                             <p class="text-[9px] font-black text-gray-900 mb-1">{{ str_replace('_', ' ', $log->action) }}</p>
-                            <p class="text-[8px] text-gray-400 font-bold mb-2">{{ $log->created_at->diffForHumans() }} by {{ $log->admin->name ?? 'System' }}</p>
+                            <p class="text-[8px] text-gray-400 font-bold mb-2" data-utc="{{ $log->created_at->toIso8601String() }}" data-format="timeago">
+                                {{ $log->created_at->diffForHumans() }} by {{ $log->admin->name ?? 'System' }}
+                            </p>
                             @if($log->old_value || $log->new_value)
                                 <div class="text-[8px] font-medium text-gray-500 bg-gray-50 p-2 rounded-lg">
                                     <span class="line-through text-red-300">{{ $log->old_value ?? 'NULL' }}</span> → <span class="text-emerald-500">{{ $log->new_value }}</span>

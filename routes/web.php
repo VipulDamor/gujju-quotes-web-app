@@ -98,6 +98,7 @@ Route::prefix('admin')->group(function () {
 
         // Contact Management
         Route::get('/contacts', [ContactManagementController::class, 'index'])->name('admin.contacts.index');
+        Route::get('/contacts/resolved', [ContactManagementController::class, 'resolved'])->name('admin.contacts.resolved');
         Route::get('/contacts/{id}', [ContactManagementController::class, 'show'])->name('admin.contacts.show');
         Route::put('/contacts/{id}', [ContactManagementController::class, 'update'])->name('admin.contacts.update');
         Route::delete('/contacts/{id}', [ContactManagementController::class, 'destroy'])->name('admin.contacts.destroy');

@@ -79,9 +79,9 @@
                                 <tr class="hover:bg-red-50/20 transition">
                                     <td class="px-6 md:px-10 py-6">
                                         <p class="text-sm md:text-base text-gray-900 font-bold leading-relaxed max-w-sm">"{{ $report->quote_text }}"</p>
-                                        <p class="text-[9px] text-gray-400 font-black uppercase tracking-widest mt-3 flex items-center gap-2">
+                                        <p class="text-[9px] text-gray-400 font-black uppercase tracking-widest mt-3 flex items-center gap-2" data-utc="{{ $report->timestamp->toIso8601String() }}" data-format="timeago">
                                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                            {{ $report->timestamp }}
+                                            {{ $report->timestamp->diffForHumans() }}
                                         </p>
                                     </td>
                                     <td class="px-6 md:px-10 py-6">

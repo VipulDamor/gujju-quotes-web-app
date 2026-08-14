@@ -26,6 +26,10 @@ class QuoteReport extends Model
         'timestamp',
     ];
 
+    protected $casts = [
+        'timestamp' => 'datetime',
+    ];
+
     public static function getReportOptions()
     {
         return [

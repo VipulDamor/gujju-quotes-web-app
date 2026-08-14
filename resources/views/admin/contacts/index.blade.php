@@ -17,13 +17,23 @@
         </div>
         <div class="bg-white p-6 rounded-[1.5rem] border border-gray-100 flex items-center justify-between">
             <div>
-                <p class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Total Active</p>
-                <h3 class="text-3xl font-black text-gray-900">{{ $stats['total'] }}</h3>
+                <p class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Active Messages</p>
+                <h3 class="text-3xl font-black text-gray-900">{{ $stats['active'] }}</h3>
             </div>
             <div class="w-12 h-12 bg-gray-50 text-gray-400 rounded-2xl flex items-center justify-center">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
             </div>
         </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="flex items-center gap-4 px-2">
+        <a href="{{ route('admin.contacts.index') }}" class="px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition {{ !request()->routeIs('admin.contacts.resolved') ? 'bg-[#4F0C2A] text-white shadow-lg' : 'bg-white text-gray-400 hover:text-gray-600 border border-gray-100' }}">
+            Inbox (Pending)
+        </a>
+        <a href="{{ route('admin.contacts.resolved') }}" class="px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition {{ request()->routeIs('admin.contacts.resolved') ? 'bg-[#4F0C2A] text-white shadow-lg' : 'bg-white text-gray-400 hover:text-gray-600 border border-gray-100' }}">
+            Archive (Resolved)
+        </a>
     </div>
 
     <!-- Filters -->
@@ -109,8 +119,12 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <p class="text-[10px] font-black text-gray-900">{{ $contact->created_at->format('M d, Y') }}</p>
-                                <p class="text-[9px] font-bold text-gray-400">{{ $contact->created_at->format('h:i A') }}</p>
+                                <p class="text-[10px] font-black text-gray-900" data-utc="{{ $contact->created_at->toIso8601String() }}" data-format="date">
+                                    {{ $contact->created_at->format('M d, Y') }}
+                                </p>
+                                <p class="text-[9px] font-bold text-gray-400" data-utc="{{ $contact->created_at->toIso8601String() }}" data-format="timeago">
+                                    {{ $contact->created_at->diffForHumans() }}
+                                </p>
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <a href="{{ route('admin.contacts.show', $contact->id) }}" class="bg-gray-900 text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-black transition active:scale-95">Manage</a>

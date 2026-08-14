@@ -23,10 +23,14 @@ class ContactManagementController extends Controller
     {
         $query = ContactRequest::active();
 
-        // Filters
-        if ($request->filled('status')) {
+        // If no specific status is requested, default to showing only New and In Progress
+        if (!$request->filled('status') && !$request->filled('search')) {
+            $query->whereIn('status', ['new', 'in_progress']);
+        } elseif ($request->filled('status')) {
             $query->where('status', $request->status);
         }
+
+        // Other Filters
         if ($request->filled('priority')) {
             $query->where('priority', $request->priority);
         }
@@ -45,10 +49,30 @@ class ContactManagementController extends Controller
 
         $stats = [
             'new' => ContactRequest::active()->where('status', 'new')->count(),
-            'total' => ContactRequest::active()->count()
+            'active' => ContactRequest::active()->whereIn('status', ['new', 'in_progress'])->count()
         ];
 
         return view('admin.contacts.index', compact('contacts', 'stats'));
+    }
+
+    /**
+     * Display a listing of resolved/closed requests (The Archive).
+     */
+    public function resolved(Request $request)
+    {
+        $query = ContactRequest::active()->whereIn('status', ['resolved', 'closed', 'spam']);
+
+        if ($request->filled('search')) {
+            $query->where(function($q) use ($request) {
+                $q->where('request_id', 'LIKE', "%{$request->search}%")
+                  ->orWhere('email', 'LIKE', "%{$request->search}%")
+                  ->orWhere('name', 'LIKE', "%{$request->search}%");
+            });
+        }
+
+        $contacts = $query->orderBy('updated_at', 'desc')->paginate(15);
+
+        return view('admin.contacts.resolved', compact('contacts'));
     }
 
     /**
